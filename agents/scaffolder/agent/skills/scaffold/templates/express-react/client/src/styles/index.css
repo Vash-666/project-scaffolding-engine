@@ -1,0 +1,245 @@
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #64748b;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --light: #f8fafc;
+  --dark: #1e293b;
+  --gray: #94a3b8;
+  --gray-light: #e2e8f0;
+  --border-radius: 8px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: var(--dark);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: white;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.highlight {
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.main {
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: var(--light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.card ul {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.card li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.card li:last-child {
+  border-bottom: none;
+}
+
+.health-section {
+  margin-bottom: 3rem;
+}
+
+.health-section h2 {
+  margin-bottom: 1rem;
+  color: var(--dark);
+}
+
+.health-card {
+  background: var(--light);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.health-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--gray-light);
+}
+
+.status-indicator {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.status-indicator.healthy {
+  background: var(--success);
+  color: white;
+}
+
+.status-indicator.unhealthy {
+  background: var(--danger);
+  color: white;
+}
+
+.timestamp {
+  color: var(--secondary);
+  font-size: 0.9rem;
+}
+
+.health-details p {
+  margin: 0.5rem 0;
+}
+
+.refresh-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background 0.3s ease;
+}
+
+.refresh-btn:hover {
+  background: var(--primary-dark);
+}
+
+.instructions {
+  margin-top: 3rem;
+}
+
+.instructions h2 {
+  margin-bottom: 1rem;
+  color: var(--dark);
+}
+
+.code-block {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  font-family: monospace;
+  overflow-x: auto;
+}
+
+.code-block code {
+  display: block;
+  margin: 0.5rem 0;
+  white-space: pre;
+}
+
+.error {
+  color: var(--danger);
+  padding: 1rem;
+  background: #fee2e2;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--danger);
+}
+
+.footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--gray-light);
+  color: white;
+}
+
+.footer-links {
+  margin-top: 1rem;
+}
+
+.footer-links a {
+  color: #ffd700;
+  text-decoration: none;
+  margin: 0 0.5rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

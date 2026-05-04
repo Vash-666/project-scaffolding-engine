@@ -1,0 +1,131 @@
+{
+  "version": "1.0",
+  "created": "2026-04-20T13:01:00-04:00",
+  "templates": {
+    "nextjs-fullstack": {
+      "name": "Next.js Full-Stack Web App",
+      "description": "Modern web applications with SSR, API routes, and database integration",
+      "techStack": ["Next.js 14+", "TypeScript", "Tailwind CSS", "ESLint", "Prettier", "Vitest", "Playwright"],
+      "fileCount": 26,
+      "estimatedSize": "2.5MB",
+      "dependencies": {
+        "next": "^14.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^5.3.0",
+        "tailwindcss": "^3.4.0",
+        "eslint": "^8.56.0",
+        "prettier": "^3.2.0",
+        "vitest": "^1.2.0",
+        "@playwright/test": "^1.40.0"
+      },
+      "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "@typescript-eslint/eslint-plugin": "^6.19.0",
+        "@typescript-eslint/parser": "^6.19.0",
+        "autoprefixer": "^10.4.0",
+        "postcss": "^8.4.0"
+      },
+      "qualityGates": {
+        "eslintScore": 9.0,
+        "typescriptCompilation": true,
+        "testCoverage": 80,
+        "buildSuccess": true,
+        "vulnerabilityScan": "pass"
+      },
+      "successCriteria": {
+        "generationTime": 30,
+        "installationTime": 60,
+        "validationTime": 30,
+        "totalTime": 120
+      }
+    },
+    "express-react": {
+      "name": "Express.js + React (Client-Server Architecture)",
+      "description": "Traditional client-server applications with separate frontend and backend",
+      "techStack": ["Express.js 4.x", "React 18+", "TypeScript", "Vite", "npm workspaces", "Vitest"],
+      "fileCount": 29,
+      "estimatedSize": "3.2MB",
+      "workspaces": true,
+      "packages": {
+        "root": {
+          "dependencies": {},
+          "devDependencies": {
+            "typescript": "^5.3.0",
+            "eslint": "^8.56.0",
+            "prettier": "^3.2.0"
+          }
+        },
+        "server": {
+          "dependencies": {
+            "express": "^4.18.0",
+            "cors": "^2.8.5",
+            "helmet": "^7.1.0",
+            "morgan": "^1.10.0"
+          },
+          "devDependencies": {
+            "@types/express": "^4.17.0",
+            "@types/cors": "^2.8.0",
+            "@types/node": "^20.11.0",
+            "ts-node": "^10.9.0",
+            "vitest": "^1.2.0"
+          }
+        },
+        "client": {
+          "dependencies": {
+            "react": "^18.2.0",
+            "react-dom": "^18.2.0",
+            "axios": "^1.6.0"
+          },
+          "devDependencies": {
+            "@types/react": "^18.2.0",
+            "@types/react-dom": "^18.2.0",
+            "@vitejs/plugin-react": "^4.2.0",
+            "vite": "^5.0.0",
+            "vitest": "^1.2.0"
+          }
+        }
+      },
+      "qualityGates": {
+        "eslintScore": 9.0,
+        "typescriptCompilation": true,
+        "testCoverage": 80,
+        "buildSuccess": true,
+        "vulnerabilityScan": "pass",
+        "workspaceSetup": true
+      },
+      "successCriteria": {
+        "generationTime": 40,
+        "installationTime": 90,
+        "validationTime": 40,
+        "totalTime": 170
+      }
+    }
+  },
+  "validationRules": {
+    "projectName": {
+      "minLength": 1,
+      "maxLength": 50,
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
+      "reservedWords": ["node", "npm", "test", "build", "dist", "src", "public"]
+    },
+    "filePermissions": {
+      "executable": ["scripts/*.sh", "bin/*"],
+      "readable": ["**/*"],
+      "writable": []
+    },
+    "security": {
+      "noSecrets": true,
+      "vulnerabilityThreshold": "high",
+      "licenseCheck": ["MIT", "Apache-2.0", "ISC"]
+    }
+  },
+  "performanceTargets": {
+    "totalTime": 120,
+    "successRate": 95,
+    "qualityScore": 9.0,
+    "vulnerabilityFreeRate": 98
+  }
+}
