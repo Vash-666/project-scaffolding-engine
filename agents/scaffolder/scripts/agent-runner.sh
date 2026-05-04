@@ -18,10 +18,51 @@ log_success() { echo -e "${GREEN}[scaffolder]${NC} $1"; }
 log_error() { echo -e "${RED}[scaffolder]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}[scaffolder]${NC} $1"; }
 
+# Progress indicator
+show_progress() {
+    local step="$1"
+    local total="$2"
+    local message="$3"
+    local width=30
+    local filled=$((width * step / total))
+    local empty=$((width - filled))
+    
+    printf "\r${BLUE}[scaffolder]${NC} ["
+    printf "%${filled}s" | tr ' ' '█'
+    printf "%${empty}s" | tr ' ' '░'
+    printf "] %d/%d %s" "$step" "$total" "$message"
+    
+    if [[ "$step" -eq "$total" ]]; then
+        echo ""  # New line on complete
+    fi
+}
+
+# Spinner for async operations
+show_spinner() {
+    local pid="$1"
+    local message="$2"
+    local spin='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+    local i=0
+    
+    while kill -0 "$pid" 2>/dev/null; do
+        i=$(( (i+1) % 10 ))
+        printf "\r${BLUE}[scaffolder]${NC} ${spin:$i:1} %s" "$message"
+        sleep 0.1
+    done
+    printf "\r"
+}
+
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_DIR="$AGENT_DIR/agent/skills/scaffold"
+
+# Source handoff protocol
+source "$SKILLS_DIR/lib/handoff-protocol.sh" 2>/dev/null || true
+
+# Structured output mode
+STRUCTURED_OUTPUT=false
+RESULT_JSON=""
 
 # Main entry point
 main() {
