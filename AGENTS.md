@@ -100,6 +100,145 @@ agents/shared/templates/HANDOFF.md
 
 ---
 
+## Sprint-Based Work (Mandatory) — P003
+
+**Effective:** 2026-05-05  
+**Status:** Manual validation (Weeks 1-2), then automated
+
+### Rule
+**No work proceeds without a validated SPRINT.md.** Every piece of work must be broken into 1-2 day sprints with a single measurable deliverable.
+
+### Sprint Constraints
+- **Duration:** Exactly 1 day or 2 days (no exceptions)
+- **Deliverable:** Exactly ONE measurable thing
+- **Assignment:** Exactly ONE agent per sprint
+- **Time box:** Hard stop at 4 hours — escalate if not done
+
+### Why This Matters
+- Prevents scope creep and endless tasks
+- Forces decomposition into actionable units
+- Enables independent agent work
+- Creates clear success/fail criteria
+- Reduces @switch involvement per unit of work
+
+### Sprint Lifecycle
+1. **Create** SPRINT.md from template
+2. **Validate** with `tools/sprint-validator.sh`
+3. **Assign** to agent with HANDOFF.md
+4. **Execute** — agent works independently
+5. **Review** — @quality checks deliverable against DoD
+6. **Retro** — 5-minute retrospective (what worked/didn't)
+
+### Process
+1. **Create sprint document:**
+   ```bash
+   tools/sprint-validator.sh create ./SPRINT.md "P003-S1-Name"
+   ```
+
+2. **Fill in required fields:**
+   - Duration: `1 day` or `2 days`
+   - Single Deliverable: One sentence, specific
+   - Definition of Done: Checkboxes, verifiable
+   - Stop Conditions: Include `>4 hours` rule
+
+3. **Validate before starting:**
+   ```bash
+   tools/sprint-validator.sh validate ./SPRINT.md
+   ```
+
+4. **Begin work** — timer starts
+
+5. **Check stop conditions every hour:**
+   - If >4 hours elapsed → escalate to @switch
+   - If unclear → ask for clarification
+   - If blocked → escalate immediately
+
+6. **Complete and review** — @quality validates DoD
+
+7. **Retro** — 5-minute entry in agent journal
+
+### Required Sections
+- ✅ Metadata — Project, Sprint #, Duration, Dates, Agent
+- ✅ Single Deliverable — One sentence, measurable
+- ✅ Definition of Done — Checkboxes, specific
+- ✅ Scope — IN and OUT of scope explicit
+- ✅ Stop Conditions — Including >4 hours rule
+
+### Stop Conditions (Escalate to @switch)
+- [ ] Task takes >4 hours (scope creep detected)
+- [ ] Acceptance criteria become unclear
+- [ ] Dependencies not available
+- [ ] Quality gate blocked
+- [ ] Technical blocker requiring architecture decision
+
+### Multi-Sprint Projects
+Break into explicit sequence:
+```
+Project P002 (7 days total)
+├── Sprint 1: Foundation + Contact Form (Day 1)
+├── Sprint 2: Authentication pages (Day 2)
+├── Sprint 3: Data Table component (Day 3)
+└── Sprint 4: Integration + Testing (Day 4)
+```
+
+Each sprint gets:
+- Own SPRINT.md
+- Own HANDOFF.md (if agent changes)
+- Own Definition of Done
+- Own 5-minute retro
+
+### Time Boxing Rules
+- **Start:** Note start time in sprint
+- **Check-in:** Every hour, assess progress vs. time
+- **4-hour mark:** Hard stop — if not done, escalate
+- **End of day:** Sprint ends, whether done or not
+
+### Definition of Done Examples
+**Good:**
+```markdown
+- [ ] File exists at `agents/scaffolder/lib/injector.sh`
+- [ ] Script passes syntax check (`bash -n` returns 0)
+- [ ] AGENTS.md updated with new protocol section
+```
+
+**Bad:**
+```markdown
+- [ ] Make it work
+- [ ] Test it
+- [ ] Document it
+```
+
+### Validation Criteria
+- Duration is exactly "1 day" or "2 days"
+- Single deliverable is specific (not placeholder)
+- Definition of Done has checkboxes
+- Stop conditions include time box (>4 hours)
+- No obvious template placeholders
+
+### Enforcement
+- **Weeks 1-2:** @switch manually validates every sprint
+- **Week 3+:** Automated via `agent-router.py` (script rejects invalid sprints)
+- **Override:** @switch can bypass with `--force` (logged for review)
+
+### Template Location
+```
+agents/shared/templates/SPRINT.md
+```
+
+### Commands
+```bash
+# Create sprint from template
+tools/sprint-validator.sh create ./SPRINT.md "P003-S1-Name"
+
+# Validate sprint meets criteria
+tools/sprint-validator.sh validate ./SPRINT.md
+
+# Estimate sprint complexity
+tools/sprint-validator.sh estimate ./SPRINT.md
+```
+
+---
+
 ## Three-Tier Model Switching Protocol
 
 **Status:** ✅ Production validated (100% context preservation)  
