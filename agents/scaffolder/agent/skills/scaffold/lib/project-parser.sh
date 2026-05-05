@@ -41,6 +41,23 @@ parse_project_request() {
         features=$(echo "$features" | sed 's/\]$/,"database_integration"]/')
     fi
     
+    # P002: New feature detection
+    if echo "$input" | grep -qi "contact"; then
+        features=$(echo "$features" | sed 's/\]$/,"contact_form"]/')
+    fi
+    
+    if echo "$input" | grep -qi "portfolio"; then
+        features=$(echo "$features" | sed 's/\]$/,"portfolio"]/')
+    fi
+    
+    if echo "$input" | grep -qi "data table\|datatable\|data grid"; then
+        features=$(echo "$features" | sed 's/\]$/,"data_table"]/')
+    fi
+    
+    if echo "$input" | grep -qi "export\|download"; then
+        features=$(echo "$features" | sed 's/\]$/,"export"]/')
+    fi
+    
     # Output structured JSON
     printf '{\n  "project_type": "%s",\n  "features": %s,\n  "suggested_template": "%s",\n  "auth_required": %s,\n  "database_required": %s,\n  "original_input": "%s"\n}\n' \
         "$project_type" "$features" "$suggested_template" "$auth_required" "$database_required" "$input"

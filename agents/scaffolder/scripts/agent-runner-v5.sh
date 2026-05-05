@@ -38,6 +38,7 @@ source "$SKILLS_DIR/lib/project-parser.sh" 2>/dev/null || {
 }
 source "$SKILLS_DIR/lib/handoff-protocol.sh" 2>/dev/null || true
 source "$SKILLS_DIR/lib/vector_memory_client_v2.sh" 2>/dev/null || true
+source "$SKILLS_DIR/lib/component-injector.sh" 2>/dev/null || true
 
 # Result tracking
 START_TIME=$(date +%s)
@@ -290,6 +291,12 @@ run_create_production() {
     if ! find "$SKILLS_DIR/templates/$suggested_template" -mindepth 1 -maxdepth 1 -exec cp -r {} "$project_path/" \; 2>/dev/null; then
         log_error "Failed to copy template files"
         return 1
+    fi
+    
+    # P002: Inject feature components
+    if [[ -n "$features" ]] && command -v inject_all_features &> /dev/null; then
+        log_info "Injecting feature components..."
+        inject_all_features "$features" "$project_path" || log_warn "Some feature injections failed"
     fi
     
     # Update package.json
