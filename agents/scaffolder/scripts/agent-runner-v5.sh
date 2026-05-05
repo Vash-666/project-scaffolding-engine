@@ -20,6 +20,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 AGENT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 SKILLS_DIR="$AGENT_DIR/agent/skills/scaffold"
 
+# Cross-platform timeout command
+TIMEOUT_CMD="timeout"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if command -v gtimeout &> /dev/null; then
+        TIMEOUT_CMD="gtimeout"
+    else
+        echo "⚠️  Warning: gtimeout not found. Install with: brew install coreutils"
+        echo "    Continuing without timeout protection (may hang on long operations)."
+        TIMEOUT_CMD=""
+    fi
+fi
+
 # Source libraries with error handling
 source "$SKILLS_DIR/lib/project-parser.sh" 2>/dev/null || {
     echo -e "${RED}[error]${NC} Failed to load project-parser.sh"
@@ -294,7 +306,7 @@ run_create_production() {
     show_progress 3 "$total_steps" "Installing dependencies..."
     cd "$project_path"
     
-    if ! timeout 180 npm install --silent > /tmp/npm-install.log 2>&1; then
+    if ! ${TIMEOUT_CMD} 180 npm install --silent > /tmp/npm-install.log 2>&1; then
         log_error "npm install failed or timed out (3min)"
         return 1
     fi
@@ -305,7 +317,7 @@ run_create_production() {
     local quality_details=()
     
     # TypeScript
-    if timeout 60 npx tsc --noEmit > /tmp/tsc.log 2>&1; then
+    if ${TIMEOUT_CMD} 60 npx tsc --noEmit > /tmp/tsc.log 2>&1; then
         quality_score=$((quality_score + 2))
         quality_details+=("TypeScript: PASS")
         log_success "TypeScript: PASS"
@@ -315,7 +327,7 @@ run_create_production() {
     fi
     
     # ESLint
-    if timeout 60 npx eslint src --ext .ts,.tsx --max-warnings 0 > /tmp/eslint.log 2>&1; then
+    if ${TIMEOUT_CMD} 60 npx eslint src --ext .ts,.tsx --max-warnings 0 > /tmp/eslint.log 2>&1; then
         quality_score=$((quality_score + 2))
         quality_details+=("ESLint: PASS")
         log_success "ESLint: PASS"
@@ -325,7 +337,7 @@ run_create_production() {
     fi
     
     # Build
-    if timeout 120 npm run build > /tmp/build.log 2>&1; then
+    if ${TIMEOUT_CMD} 120 npm run build > /tmp/build.log 2>&1; then
         quality_score=$((quality_score + 2))
         quality_details+=("Build: PASS")
         log_success "Build: PASS"
