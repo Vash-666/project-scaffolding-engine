@@ -239,6 +239,147 @@ tools/sprint-validator.sh estimate ./SPRINT.md
 
 ---
 
+## Agent Journal Protocol (Mandatory) — P003
+
+**Effective:** 2026-05-05  
+**Status:** Active
+
+### Rule
+**Every agent session ends with a journal entry.** Journals provide persistent, focused context for each agent's domain.
+
+### Purpose
+- Maintain domain expertise between activations
+- Capture learnings and patterns
+- Reduce repeated mistakes
+- Enable continuous improvement
+
+### Journal Location
+```
+agents/<name>/journal.md
+```
+
+### Entry Format
+Every journal entry must include:
+
+```markdown
+## YYYY-MM-DD: [Brief Task Description]
+
+**Task:** [What I was asked to do]
+**Result:** [What shipped, quality, time taken]
+
+### What Worked
+- [Pattern or approach that succeeded]
+
+### What Didn't
+- [Issue or surprise]
+
+### What I'd Do Differently
+- [Improvement for next time]
+```
+
+### When to Write
+- **End of every sprint** — Required before task marked complete
+- **After significant learning** — Even if sprint continues
+- **When pattern identified** — Something to remember for future
+
+### Journal Rules
+- **Append-only** — Never delete old entries
+- **Specific, not vague** — "STAR framework worked" not "it was good"
+- **Actionable** — Future self should know what to do differently
+- **Brief** — 5 minutes max to write
+
+### Journal Content Examples
+
+**Good entry:**
+```markdown
+## 2026-05-05: Created contact form component
+
+**Task:** Build reusable contact form with validation
+**Result:** Component shipped, 9.5/10 quality, 3 hours
+
+### What Worked
+- Zod + React Hook Form combination was clean
+- shadcn/ui Card components saved styling time
+- API route pattern from template worked first try
+
+### What Didn't
+- Template was missing Input component — had to improvise
+- Gemini API key rejected, had to switch to DeepSeek
+
+### What I'd Do Differently
+- Check template dependencies before starting
+- Have fallback model ready for all Gemini tasks
+```
+
+**Bad entry:**
+```markdown
+## 2026-05-05: Did some work
+
+**Task:** Build stuff
+**Result:** Done
+
+### What Worked
+- Everything
+
+### What Didn't
+- Nothing
+
+### What I'd Do Differently
+- Nothing
+```
+
+### Loading Journal Context
+When spawning an agent, load recent journal context:
+
+```bash
+# In spawn script
+if [[ -f "agents/${agent_name}/journal.md" ]]; then
+    journal_context=$(tail -30 "agents/${agent_name}/journal.md")
+    task="${task}
+
+## Your Recent Journal Context
+${journal_context}"
+fi
+```
+
+This gives the agent immediate domain awareness without re-reading everything.
+
+### Helper Script
+```bash
+# Add entry to agent journal
+tools/journal-updater.sh update <agent> "task" "result" "worked" "didnt" "different"
+
+# View recent entries
+tools/journal-updater.sh view <agent> [lines]
+
+# List all agent journals
+tools/journal-updater.sh list
+```
+
+### Agent Journal Checklist
+- [ ] Journal file exists at `agents/<name>/journal.md`
+- [ ] Purpose and role documented in header
+- [ ] At least one entry from recent work
+- [ ] Entries follow format (What Worked / Didn't / Differently)
+- [ ] Journal context loaded at spawn time
+
+### Enforcement
+- **Required:** Sprint not complete without journal entry
+- **Review:** @switch checks journal exists and has recent entry
+- **Integration:** Spawn process loads journal context automatically
+- **Lightweight:** 5-minute entry, not a burden
+
+### Journal Files
+| Agent | Journal | Status |
+|-------|---------|--------|
+| @switch | `agents/switch/journal.md` | ✅ Active |
+| @product | `agents/product/journal.md` | ✅ Active |
+| @quality | `agents/quality/journal.md` | ✅ Active |
+| @content | `agents/content/journal.md` | ✅ Active |
+| @scaffolder | `agents/scaffolder/journal.md` | ✅ Active |
+
+---
+
 ## Three-Tier Model Switching Protocol
 
 **Status:** ✅ Production validated (100% context preservation)  
